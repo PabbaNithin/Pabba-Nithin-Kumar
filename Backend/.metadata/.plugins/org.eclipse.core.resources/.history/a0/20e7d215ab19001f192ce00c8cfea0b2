@@ -1,0 +1,19 @@
+package com.password.controller;
+
+import com.password.service.OtpService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/otp")
+public class OtpController {
+    @Autowired
+    private OtpService otpService;
+
+    @PostMapping("/generate")
+    public String generateOtp(@RequestBody String email) {
+        String otp = otpService.generateOtp();
+        otpService.sendOtpEmail(email, otp);
+        return otp;
+    }
+}

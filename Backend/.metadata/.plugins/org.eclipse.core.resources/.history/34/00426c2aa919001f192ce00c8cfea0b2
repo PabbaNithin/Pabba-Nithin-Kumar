@@ -1,0 +1,5 @@
+package com.password.controller;
+
+public class OtpController {
+
+}

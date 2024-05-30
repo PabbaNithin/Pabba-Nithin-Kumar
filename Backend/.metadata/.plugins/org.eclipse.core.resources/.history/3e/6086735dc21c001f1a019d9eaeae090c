@@ -1,0 +1,45 @@
+package com.password.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class PasswordStrengthService {
+
+    public String evaluatePasswordStrength(String password) {
+        StringBuilder feedback = new StringBuilder();
+        boolean isStrong = true;
+
+        if (password.length() < 8) {
+            feedback.append("Password is too short. It should be at least 8 characters long. ");
+            isStrong = false;
+        }
+
+        boolean hasUpper = password.chars().anyMatch(Character::isUpperCase);
+        boolean hasLower = password.chars().anyMatch(Character::isLowerCase);
+        boolean hasDigit = password.chars().anyMatch(Character::isDigit);
+        boolean hasSpecial = password.chars().anyMatch(ch -> "!@#$%^&*()_+".contains(Character.toString(ch)));
+
+        if (!hasUpper) {
+            feedback.append("Password should contain at least one uppercase letter. ");
+            isStrong = false;
+        }
+        if (!hasLower) {
+            feedback.append("Password should contain at least one lowercase letter. ");
+            isStrong = false;
+        }
+        if (!hasDigit) {
+            feedback.append("Password should contain at least one digit. ");
+            isStrong = false;
+        }
+        if (!hasSpecial) {
+            feedback.append("Password should contain at least one special character (e.g., !@#$%^&*()_+). ");
+            isStrong = false;
+        }
+
+        if (isStrong) {
+            return "Strong";
+        } else {
+            return feedback.toString().trim();
+        }
+    }
+}

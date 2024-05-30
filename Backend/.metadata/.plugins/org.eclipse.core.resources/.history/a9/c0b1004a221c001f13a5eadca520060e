@@ -1,0 +1,32 @@
+package com.password.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import com.password.service.PasswordStrengthService;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/password-strength")
+public class PasswordController {
+    @Autowired
+    private PasswordStrengthService passwordStrengthService;
+
+    @PostMapping("/check")
+    public Map<String, String> checkPasswordStrength(@RequestBody String password) {
+        String strength = passwordStrengthService.evaluatePasswordStrength(password);
+        Map<String, String> response = new HashMap<>();
+        response.put("strength", strength);
+
+        if ("Weak".equals(strength)) {
+            String suggestion = passwordStrengthService.suggestStrongPassword();
+            response.put("suggestion", suggestion);
+        }
+
+        return response;
+    }
+}
